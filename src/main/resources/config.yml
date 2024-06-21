@@ -1,7 +1,9 @@
+update-checker: true
+
 Redis:
   #a secure password that cannot be cracked, please change it!
   #it is also recommended to firewall your redis server with iptables so it can only be accessed by specific IP addresses
-  Password: "yHy0d2zdBlRmaSPj3CiBwEv5V3XxBTLTrCsGW7ntBnzhfxPxXJS6Q1aTtR6DSfAtCZr2VxWnsungXHTcF94a4bsWEpGAvjL9XMU"
+  Password: "averysecurepassword"
   #hostname of your redis server, you can use free redis hosting (search for it online) if you do not have the ability to host your own redis server
   #redis server is very lightweight, takes under 30 MB of RAM usually
   Host: "127.0.0.1"
@@ -14,27 +16,16 @@ Redis:
   #time out in milliseconds, how long it should take before it decides that it is unable to connect when sending a message
   #9000 = 9 seconds
   TimeOut: 9000
-  #also known as SSL, only use this if you're running Redis 6.0.6 or higher, older versions will not work correctly
+  #only use this if you're running Redis 6.0.6 or higher, older versions will not work correctly
   #it encrypts your traffic and makes data exchange between distant servers secure
-  useTLS: false
-  #EncryptMessages may be useful if you cannot use TLS due to use of older version of Redis or if you're paranoid about privacy and want to double encrypt your messages
-  #however this will not encrypt the initial authentication password, only the messages sent (use TLS for initial authentication password encryption)
+  useSSL: false
 
-  #the encryption configuration must be the same across all servers in order to communicate
 
-  #use 16 characters long key for AES-128 encryption
-  #32 characters long key for AES-256 encryption (recommended)
-  #AES-128 is faster, but less secure (but it is not crackable by today's technology as of 2020, may be crackable by quantum computers)
-  #the AES implementation used in RediSkript uses SIV mode, which makes the same key resistant to cracking for a big count of messages without the need of changing the key very often
-  EncryptMessages: true
-  #EncryptionKey and MacKey must be different
-  EncryptionKey: "32CHARACTERS KEY"
-  MacKey: "32CHARACTERS KEY"
-
-RedisBungee:
-  # If you want to use RedisBungee, set this to true
-  Enabled: false
-
+# Enable support for RediVelocity
+# RediVelocity is a Velocity plugin, that is basically a copy of RedisBungee, but modern and for Velocity
+RediVelocity:
+  enabled: false
+  use-json: true
 
 #the channels from which this server can receive messages
 #you can always send messages to all channels!

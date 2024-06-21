@@ -4,12 +4,14 @@ version: "1.0.0"
 api-version: "1.20"
 
 author: "byPixelTV"
-description: "A Skript-Addon to interact with Redis."
-website: "https://bypixeltv.me"
+description: "A Skript-Addon to interact with Redis. This addon has support for Redis hashes, strings and lists!"
+website: "https://bypixeltv.de"
 
 libraries:
-  - "dev.jorel:commandapi-bukkit-shade:9.4.0"
-  - "dev.jorel:commandapi-bukkit-kotlin:9.4.0"
-  - "net.axay:kspigot:1.20.3"
+  - "dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.5.1"
+  - "dev.jorel:commandapi-bukkit-kotlin:9.5.1"
+  - "net.axay:kspigot:1.20.4"
+  - "redis.clients:jedis:5.2.0-beta4"
+  - "org.json:json:20240303"
 
 depend: [Skript]
