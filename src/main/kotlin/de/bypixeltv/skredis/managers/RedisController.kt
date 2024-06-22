@@ -316,8 +316,8 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
     }
 
 
-    private fun setupChannels(): Array<ByteArray> {
-        val channels = config.getString("Channels")?.split(", ") ?: emptyList()
+    fun setupChannels(): Array<ByteArray> {
+        val channels = Main.INSTANCE.config.getString("Channels")?.split(", ") ?: emptyList()
 
         return Array(channels.size) { channels[it].toByteArray(StandardCharsets.UTF_8) }
     }

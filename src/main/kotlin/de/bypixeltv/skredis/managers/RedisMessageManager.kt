@@ -7,9 +7,15 @@ object RedisMessageManager {
     private val redis = Main.INSTANCE.getRC()?.getJedisPool()
 
     init {
+        val channels = mutableListOf("redisbungee-data", "redisvelocity-players")
+        val cchannels = Main.INSTANCE.getRC()?.setupChannels()?.map { it.toString(Charsets.UTF_8) } ?: emptyList()
+        channels.addAll(cchannels)
+
         val jedisPubSub = object : JedisPubSub() {
             override fun onPMessage(pattern: String, channel: String, message: String) {
-                Main.INSTANCE.getRC()?.processMessage(channel, message)
+                if (channels.contains("channel")) {
+                    Main.INSTANCE.getRC()?.processMessage(channel, message)
+                }
             }
 
             override fun onPSubscribe(pattern: String, subscribedChannels: Int) {
@@ -21,7 +27,7 @@ object RedisMessageManager {
         Thread {
             try {
                 redis?.resource?.use { jedis ->
-                    jedis.psubscribe(jedisPubSub, "*")
+                    jedis.psubscribe(jedisPubSub, *channels.toTypedArray())
                 }
             } catch (e: Exception) {
                 Main.INSTANCE.sendErrorLogs("Error while subscribing to Redis: ${e.message}")
