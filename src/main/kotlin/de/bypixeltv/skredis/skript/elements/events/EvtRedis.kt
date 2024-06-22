@@ -8,6 +8,7 @@ import ch.njol.skript.registrations.EventValues
 import ch.njol.skript.util.Getter
 import de.bypixeltv.skredis.events.RedisMessageEvent
 import org.bukkit.event.Event
+import java.util.Date
 
 class EvtRedis : SkriptEvent() {
 
@@ -19,6 +20,20 @@ class EvtRedis : SkriptEvent() {
                 Getter<String, RedisMessageEvent>() {
                 override fun get(e: RedisMessageEvent): String {
                     return e.channelName
+                }
+            }, 0)
+
+            EventValues.registerEventValue(RedisMessageEvent::class.java, String::class.java, object :
+                Getter<String, RedisMessageEvent>() {
+                override fun get(e: RedisMessageEvent): String {
+                    return e.message
+                }
+            }, 0)
+
+            EventValues.registerEventValue(RedisMessageEvent::class.java, Date::class.java, object :
+                Getter<Date, RedisMessageEvent>() {
+                override fun get(e: RedisMessageEvent): Date {
+                    return Date(e.date)
                 }
             }, 0)
         }

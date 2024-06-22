@@ -17,8 +17,8 @@ class EffSendMessage : Effect() {
         }
     }
 
-    private var channel: Expression<String>? = null
     private var message: Expression<String>? = null
+    private var channel: Expression<String>? = null
 
     @Suppress("UNCHECKED_CAST")
     override fun init(
@@ -27,8 +27,8 @@ class EffSendMessage : Effect() {
         isDelayed: Kleenean,
         parser: SkriptParser.ParseResult
     ): Boolean {
-        this.channel = expressions[0] as Expression<String>
-        this.message = expressions[1] as Expression<String>
+        this.message = expressions[0] as Expression<String>
+        this.channel = expressions[1] as Expression<String>
         return true
     }
 
@@ -54,7 +54,7 @@ class EffSendMessage : Effect() {
             return
         }
         try {
-            plugin.getRC()?.sendMessage(message.toString(), channel)
+            plugin.getRC()?.sendMessage(message, channel)
         } catch (e: Exception) {
             plugin.sendErrorLogs("An error occurred while sending the message to the Redis server.")
             e.printStackTrace()

@@ -19,7 +19,7 @@ class ExprMessageDate : SimpleExpression<String>() {
         init {
             Skript.registerExpression(
                 ExprMessageDate::class.java, String::class.java,
-                ExpressionType.SIMPLE, "redis message")
+                ExpressionType.SIMPLE, "redis message date")
         }
     }
 

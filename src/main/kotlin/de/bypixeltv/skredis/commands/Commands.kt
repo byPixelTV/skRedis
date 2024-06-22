@@ -87,21 +87,5 @@ class Commands {
                 player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> <color:#43fa00>Successfully reloaded the config!</color>"))
             }
         }
-        literalArgument("redis") {
-            withPermission("skredis.admin.redis")
-            literalArgument("reload") {
-                withPermission("skredis.admin.redis.reload")
-                anyExecutor { player, _ ->
-                    player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> <color:#ff0000>Trying to reload the Redis connection!</color>"))
-                    //reload redis asynchronously to not lag the main thread (was doing a few seconds lagspike at most)
-                    object : BukkitRunnable() {
-                        override fun run() {
-                            Main.INSTANCE.reloadRedis()
-                        }
-                    }.runTaskAsynchronously(Main.INSTANCE)
-                    player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> <color:#43fa00>Reloaded channels, encryption and login details!</color>"))
-                }
-            }
-        }
     }
 }
