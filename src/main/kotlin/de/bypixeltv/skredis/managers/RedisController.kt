@@ -245,6 +245,12 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
         }
     }
 
+    fun removeFromListByValue(listName: String, value: String) {
+        jedisPool.resource.use { jedis ->
+            jedis.lrem(listName, 0, value)
+        }
+    }
+
     fun deleteList(listName: String) {
         jedisPool.resource.use { jedis ->
             jedis.del(listName)

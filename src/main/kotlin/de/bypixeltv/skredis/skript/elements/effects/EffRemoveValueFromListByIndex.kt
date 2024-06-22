@@ -9,11 +9,11 @@ import de.bypixeltv.skredis.Main
 import org.bukkit.event.Event
 
 @Suppress("unused")
-class EffRemoveValueFromRedisList : Effect() {
+class EffRemoveValueFromListByIndex : Effect() {
 
     companion object{
         init {
-            Skript.registerEffect(EffRemoveValueFromRedisList::class.java, "delete entry with index %number% from redis (list|array) %string%")
+            Skript.registerEffect(EffRemoveValueFromListByIndex::class.java, "delete entry with index %number% from redis (list|array) %string%")
         }
     }
 
