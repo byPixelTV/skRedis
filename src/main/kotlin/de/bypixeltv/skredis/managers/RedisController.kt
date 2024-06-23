@@ -176,8 +176,8 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
                 }
             }
         } else {
-            if (j.getString("action") == "Skript") {
-                val messages = j.getJSONArray("Messages")
+            if (j.getString("event") == "skript") {
+                val messages = j.getJSONArray("messages")
                 for (i in 0 until messages.length()) {
                     val event = RedisMessageEvent(channel, messages.getString(i), j.getLong("date"))
                     plugin.server.pluginManager.callEvent(event)
@@ -316,8 +316,8 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
     }
 
 
-    fun setupChannels(): Array<ByteArray> {
-        val channels = Main.INSTANCE.config.getString("Channels")?.split(", ") ?: emptyList()
+    private fun setupChannels(): Array<ByteArray> {
+        val channels = Main.INSTANCE.config.getStringList("Channels")
 
         return Array(channels.size) { channels[it].toByteArray(StandardCharsets.UTF_8) }
     }

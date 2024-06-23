@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "de.bypixeltv"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -49,11 +49,7 @@ tasks {
         options.release.set(21)
         options.compilerArgs.add("-Xlint:deprecation")
     }
-    named("compileKotlin", org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask::class.java) {
-        compilerOptions {
-            freeCompilerArgs.add("-Xexport-kdoc")
-        }
-    }
+    named("compileKotlin", org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask::class.java)
 }
 
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION

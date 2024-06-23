@@ -8,12 +8,12 @@ object RedisMessageManager {
 
     init {
         val channels = mutableListOf("redisbungee-data", "redisvelocity-players")
-        val cchannels = Main.INSTANCE.getRC()?.setupChannels()?.map { it.toString(Charsets.UTF_8) } ?: emptyList()
+        val cchannels = Main.INSTANCE.config.getStringList("Channels")
         channels.addAll(cchannels)
 
         val jedisPubSub = object : JedisPubSub() {
             override fun onPMessage(pattern: String, channel: String, message: String) {
-                if (channels.contains("channel")) {
+                if (channels.contains(channel)) {
                     Main.INSTANCE.getRC()?.processMessage(channel, message)
                 }
             }
