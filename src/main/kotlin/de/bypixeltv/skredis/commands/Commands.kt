@@ -5,6 +5,7 @@ import ch.njol.skript.util.Version
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import de.bypixeltv.skredis.Main
+import de.bypixeltv.skredis.managers.RedisMessageManager
 import de.bypixeltv.skredis.utils.UpdateChecker
 import de.bypixeltv.skredis.utils.UpdateChecker.Companion.getLatestReleaseVersion
 import dev.jorel.commandapi.kotlindsl.anyExecutor
@@ -55,7 +56,7 @@ class Commands {
                 getLatestReleaseVersion { version ->
                     val plugVer = Version(Main.INSTANCE.description.version)
                     val curVer = Version(version)
-                    val url = URL("https://api.github.com/repos/byPixelTV/SkRedis/releases/latest")
+                    val url = URL("https://api.github.com/repos/byPixelTV/skRedis/releases/latest")
                     val reader = BufferedReader(InputStreamReader(url.openStream()))
                     val jsonObject = Gson().fromJson(reader, JsonObject::class.java)
                     var tagName = jsonObject["tag_name"].asString
@@ -85,6 +86,19 @@ class Commands {
                     Main.INSTANCE.saveDefaultConfig()
                 }
                 player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> <color:#43fa00>Successfully reloaded the config!</color>"))
+            }
+        }
+        literalArgument("reloadredis") {
+            withPermission("skredis.admin.reloadredis")
+            anyExecutor { player, _ ->
+                try {
+                    RedisMessageManager.reloadRedisConnection()
+                    player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> <color:#43fa00>Successfully reloaded the redis connection!</color>"))
+                } catch (e: Exception) {
+                    player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> <red>Failed to reload the Redis connection!</red>"))
+                    e.printStackTrace()
+                    return@anyExecutor
+                }
             }
         }
     }

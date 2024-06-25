@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable {
 
-    private val jedisPool: JedisPool
+    private var jedisPool: JedisPool
     private var channelsInByte: Array<ByteArray>
     private val isConnectionBroken = AtomicBoolean(true)
     private val isConnecting = AtomicBoolean(false)
