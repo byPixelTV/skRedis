@@ -25,7 +25,7 @@ Redis:
 # RediVelocity is a Velocity plugin, that is basically a copy of RedisBungee, but modern and for Velocity
 RediVelocity:
   enabled: false
-  use-json: true
+  use-json: false
 
 #the channels from which this server can receive messages
 #you can always send messages to all channels!

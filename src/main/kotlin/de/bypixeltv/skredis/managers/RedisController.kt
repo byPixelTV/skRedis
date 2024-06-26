@@ -62,7 +62,7 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
         plugin.sendLogs("Connecting to Redis server...")
         isConnecting.set(true)
         try {
-            jedisPool.resource.use { jedis ->
+            jedisPool.resource.use { _ ->
                 isConnectionBroken.set(false)
                 plugin.sendLogs("Connection to Redis server has established! Success!")
             }
@@ -90,7 +90,7 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
     fun sendMessage(message: Array<String>, channel: String) {
         val json = JSONObject()
         json.put("messages", JSONArray(message.toList()))
-        json.put("event", "skript")
+        json.put("action", "skript")
         json.put("date", System.currentTimeMillis())
         finishSendMessage(json, channel)
     }
@@ -132,51 +132,58 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
         val j = JSONObject(message)
 
         if (plugin.config.getBoolean("RediVelocity.enabled")) {
-            when (j.getString("event")) {
-                "serverSwitch", "postLogin", "disconnect" -> {
-                    val ipaddress = j.getString("ipadress")
-                    val username = j.getString("username")
-                    val uuid = j.getString("uuid")
-                    val clientbrand = j.getString("clientbrand")
-                    val proxyid = try {
-                        j.getString("proxyid")
-                    } catch (e: Exception) {
-                        "unknown"
+            if (!config.getBoolean("RediVelocity.use-json")) {
+                when (j.getString("action")) {
+                    "serverSwitch", "postLogin", "disconnect" -> {
+                        val ipaddress = j.getString("ipadress")
+                        val username = j.getString("username")
+                        val uuid = j.getString("uuid")
+                        val clientbrand = j.getString("clientbrand")
+                        val proxyid = try {
+                            j.getString("proxyid")
+                        } catch (e: Exception) {
+                            "unknown"
+                        }
+                        val messages = "$proxyid;$username;$uuid;$clientbrand;$ipaddress"
+                        val date = System.currentTimeMillis()
+                        val eventrv = RedisMessageEvent(channel, "redisvelocity:${j.getString("action")};$messages", date)
+                        var eventrb: RedisMessageEvent? = null
+                        when (j.getString("action")) {
+                            "serverSwitch" -> {
+                                eventrb = RedisMessageEvent(channel, "redisbungee:SERVER_CHANGE;$messages", date)
+                            }
+                            "postLogin" -> {
+                                eventrb = RedisMessageEvent(channel, "redisbungee:JOIN;$messages", date)
+                            }
+                            "disconnect" -> {
+                                eventrb = RedisMessageEvent(channel, "redisbungee:LEAVE;$messages", date)
+                            }
+                        }
+                        try {
+                            if (plugin.isEnabled) {
+                                if (eventrb != null) {
+                                    plugin.server.pluginManager.callEvent(eventrb)
+                                }
+                                plugin.server.pluginManager.callEvent(eventrv)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
-                    val messages = "$proxyid;$username;$uuid;$clientbrand;$ipaddress"
-                    val date = System.currentTimeMillis()
-                    val eventrv = RedisMessageEvent(channel, "redisvelocity:${j.getString("event")};$messages", date)
-                    var eventrb = RedisMessageEvent(channel, "redisvelocity:${j.getString("event")};$messages", date)
-                    when (j.getString("event")) {
-                        "serverSwitch" -> {
-                            eventrb = RedisMessageEvent(channel, "redisbungee:SERVER_CHANGE;$messages", date)
+                    "skript" -> {
+                        val messages = j.getJSONArray("messages")
+                        for (i in 0 until messages.length()) {
+                            val event = RedisMessageEvent(channel, messages.getString(i), j.getLong("date"))
+                            plugin.server.pluginManager.callEvent(event)
                         }
-                        "postLogin" -> {
-                            eventrb = RedisMessageEvent(channel, "redisbungee:JOIN;$messages", date)
-                        }
-                        "disconnect" -> {
-                            eventrb = RedisMessageEvent(channel, "redisbungee:LEAVE;$messages", date)
-                        }
-                    }
-                    try {
-                        if (plugin.isEnabled) {
-                            plugin.server.pluginManager.callEvent(eventrb)
-                            plugin.server.pluginManager.callEvent(eventrv)
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
                     }
                 }
-                "skript" -> {
-                    val messages = j.getJSONArray("messages")
-                    for (i in 0 until messages.length()) {
-                        val event = RedisMessageEvent(channel, messages.getString(i), j.getLong("date"))
-                        plugin.server.pluginManager.callEvent(event)
-                    }
-                }
+            } else {
+                val event = RedisMessageEvent(channel, message, System.currentTimeMillis())
+                plugin.server.pluginManager.callEvent(event)
             }
         } else {
-            if (j.getString("event") == "skript") {
+            if (j.getString("action") == "skript") {
                 val messages = j.getJSONArray("messages")
                 for (i in 0 until messages.length()) {
                     val event = RedisMessageEvent(channel, messages.getString(i), j.getLong("date"))
@@ -320,10 +327,6 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
         val channels = Main.INSTANCE.config.getStringList("Channels")
 
         return Array(channels.size) { channels[it].toByteArray(StandardCharsets.UTF_8) }
-    }
-
-    fun isRedisConnectionOffline(): Boolean {
-        return isConnectionBroken.get()
     }
 
     fun getJedisPool(): JedisPool {
