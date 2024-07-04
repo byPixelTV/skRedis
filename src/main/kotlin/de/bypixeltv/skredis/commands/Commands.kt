@@ -90,6 +90,13 @@ class Commands {
         literalArgument("reloadredis") {
             withPermission("skredis.admin.reloadredis")
             anyExecutor { player, _ ->
+                Main.INSTANCE.reloadConfig()
+                val path = Paths.get("/plugins/SkRedis/config.yml")
+                if (Files.exists(path)) {
+                    Main.INSTANCE.saveConfig()
+                } else {
+                    Main.INSTANCE.saveDefaultConfig()
+                }
                 try {
                     RedisMessageManager.reloadRedisConnection()
                     player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> <color:#43fa00>Successfully reloaded the redis connection!</color>"))
