@@ -11,15 +11,15 @@
 [//]: # (<- Header ->)
 <h1 align="center">skRedis</h1>
 
-<h3 align="center">Use Redis in Skript with ease!</h3>
+<h3 align="center">The modern way to use Redis with Skript!</h3>
 <h6 align="center">This Skript-Addon allows you to interact with Redis!</h6>
 <hr>
 
 ### 📑 Requirements
 
-* **Java 17+**
-* **Skript 2.8.7**
-* **Minecraft 1.20.6**
+* **Java 21+**
+* **Skript 2.9.0**
+* **Minecraft 1.21**
 
 ### 🆘 Where can I get help?
 
