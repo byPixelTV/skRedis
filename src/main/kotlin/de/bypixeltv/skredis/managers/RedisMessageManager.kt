@@ -11,7 +11,7 @@ object RedisMessageManager {
     private var channels = mutableListOf("redisbungee-data", "redisvelocity-players")
 
     init {
-        val cchannels = Main.INSTANCE.config.getStringList("Channels")
+        val cchannels = Main.INSTANCE.config.getStringList("channels")
         channels.addAll(cchannels)
 
         jedisPubSub = object : JedisPubSub() {
@@ -55,23 +55,23 @@ object RedisMessageManager {
         jConfig.minIdle = 1
         jConfig.blockWhenExhausted = true
 
-        val password = Main.INSTANCE.config.getString("Redis.Password") ?: ""
+        val password = Main.INSTANCE.config.getString("redis.password") ?: ""
         redis = if (password.isEmpty()) {
             JedisPool(
                 jConfig,
-                Main.INSTANCE.config.getString("Redis.Host") ?: "127.0.0.1",
-                Main.INSTANCE.config.getInt("Redis.Port"),
-                Main.INSTANCE.config.getInt("Redis.Timeout"),
-                Main.INSTANCE.config.getBoolean("Redis.useTLS")
+                Main.INSTANCE.config.getString("redis.host") ?: "127.0.0.1",
+                Main.INSTANCE.config.getInt("redis.port"),
+                Main.INSTANCE.config.getInt("redis.timeout"),
+                Main.INSTANCE.config.getBoolean("redis.usessl")
             )
         } else {
             JedisPool(
                 jConfig,
-                Main.INSTANCE.config.getString("Redis.Host") ?: "127.0.0.1",
-                Main.INSTANCE.config.getInt("Redis.Port"),
-                Main.INSTANCE.config.getInt("Redis.Timeout"),
+                Main.INSTANCE.config.getString("redis.host") ?: "127.0.0.1",
+                Main.INSTANCE.config.getInt("redis.port"),
+                Main.INSTANCE.config.getInt("redis.timeout"),
                 password,
-                Main.INSTANCE.config.getBoolean("Redis.useTLS")
+                Main.INSTANCE.config.getBoolean("redis.usessl")
             )
         }
 

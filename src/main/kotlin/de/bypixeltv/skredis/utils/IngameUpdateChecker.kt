@@ -19,8 +19,8 @@ object IngameUpdateChecker {
 
                 Bukkit.getScheduler().runTaskLater(Main.INSTANCE, Runnable {
                     updateVersion.thenApply { version ->
-                        player.sendMessage(miniMessages.deserialize("<dark_grey>[<aqua>skRedis</aqua>]</dark_grey> update available: <green>$version</green>"))
-                        player.sendMessage(miniMessages.deserialize("<dark_grey>[<aqua>skRedis</aqua>]</dark_grey> download at <aqua><click:open_url:'https://github.com/byPixelTV/skRedis/releases'>https://github.com/byPixelTV/skRedis/releases</click></aqua>"))
+                        player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> update available: <green>$version</green>"))
+                        player.sendMessage(miniMessages.deserialize("<dark_grey>[<gradient:blue:aqua:blue>SkRedis</gradient>]</dark_grey> download at <aqua><click:open_url:'https://github.com/byPixelTV/skRedis/releases'>https://github.com/byPixelTV/skRedis/releases</click></aqua>"))
                         true
                     }
                 }, 30)
