@@ -31,23 +31,23 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
         jConfig.minIdle = 1
         jConfig.blockWhenExhausted = true
 
-        val password = config.getString("Redis.Password") ?: ""
+        val password = config.getString("redis.password") ?: ""
         jedisPool = if (password.isEmpty()) {
             JedisPool(
                 jConfig,
-                config.getString("Redis.Host") ?: "127.0.0.1",
-                config.getInt("Redis.Port"),
-                config.getInt("Redis.Timeout"),
-                config.getBoolean("Redis.useTLS")
+                config.getString("redis.host") ?: "127.0.0.1",
+                config.getInt("redis.port"),
+                config.getInt("redis.timeout"),
+                config.getBoolean("redis.usessl")
             )
         } else {
             JedisPool(
                 jConfig,
-                config.getString("Redis.Host") ?: "127.0.0.1",
-                config.getInt("Redis.Port"),
-                config.getInt("Redis.Timeout"),
+                config.getString("redis.Host") ?: "127.0.0.1",
+                config.getInt("redis.port"),
+                config.getInt("redis.timeout"),
                 password,
-                config.getBoolean("Redis.useTLS")
+                config.getBoolean("redis.usessl")
             )
         }
 
@@ -131,8 +131,8 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
     fun processMessage(channel: String, message: String) {
         val j = JSONObject(message)
 
-        if (plugin.config.getBoolean("RediVelocity.enabled")) {
-            if (!config.getBoolean("RediVelocity.use-json")) {
+        if (plugin.config.getBoolean("redivelocity.enabled")) {
+            if (!config.getBoolean("redivelocity.use-json")) {
                 when (j.getString("action")) {
                     "serverSwitch", "postLogin", "disconnect" -> {
                         val ipaddress = j.getString("ipadress")

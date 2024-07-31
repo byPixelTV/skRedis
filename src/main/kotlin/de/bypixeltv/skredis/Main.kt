@@ -19,11 +19,11 @@ class Main : KSpigot() {
     private var redisController: RedisController? = null
 
     fun sendLogs(message: String) {
-        this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>skRedis</aqua>]</grey> <yellow>$message</yellow>"))
+        this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <yellow>$message</yellow>"))
     }
 
     fun sendErrorLogs(message: String) {
-        this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>skRedis</aqua>]</grey> <red>$message</red>"))
+        this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>$message</red>"))
     }
 
     fun getRC(): RedisController? {
@@ -63,13 +63,13 @@ class Main : KSpigot() {
         val version = description.version
         if (version.contains("-")) {
             server.consoleSender.sendMessage(miniMessages.deserialize("<yellow>This is a BETA build, things may not work as expected, please report any bugs on GitHub</yellow>"))
-            server.consoleSender.sendMessage(miniMessages.deserialize("<yellow>https://github.com/byPixelTV/skRedis/issues</yellow>"))
+            server.consoleSender.sendMessage(miniMessages.deserialize("<yellow>https://github.com/byPixelTV/SkRedis/issues</yellow>"))
         }
 
         UpdateChecker.checkForUpdate(version)
         RedisMessageManager
 
-        server.consoleSender.sendMessage(miniMessages.deserialize("<gray>[<aqua>SkRedis</aqua>]</gray> <yellow>Successfully enabled skRedis!</yellow>"))
+        server.consoleSender.sendMessage(miniMessages.deserialize("<gray>[<aqua>SkRedis</aqua>]</gray> <yellow>Successfully enabled SkRedis!</yellow>"))
 
         try {
             localAddon?.loadClasses("de.bypixeltv.skredis.skript", "elements")

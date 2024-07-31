@@ -28,17 +28,17 @@ class UpdateChecker(private val plugin: Main) : Listener {
 
         fun checkForUpdate(pluginVersion: String) {
             val miniMessages = MiniMessage.miniMessage()
-            server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>skRedis</aqua>]</grey> Checking for updates..."))
+            server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> Checking for updates..."))
             getLatestReleaseVersion { version ->
                 val plugVer = Version(pluginVersion)
                 val curVer = Version(version)
                 if (curVer <= plugVer) {
-                    server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>skRedis</aqua>]</grey> <green>The plugin is up to date!</green>"))
+                    server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <green>The plugin is up to date!</green>"))
                 } else {
-                    server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>skRedis</aqua>]</grey> <red>The plugin is not up to date!</red>"))
+                    server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>The plugin is not up to date!</red>"))
                     server.consoleSender.sendMessage(miniMessages.deserialize(" - Current version: <red>v${pluginVersion}</red>"))
                     server.consoleSender.sendMessage(miniMessages.deserialize(" - Available update: <green>v${version}</green>"))
-                    server.consoleSender.sendMessage(miniMessages.deserialize(" - Download available at: <aqua>https://github.com/byPixelTV/skRedis/releases</aqua>"))
+                    server.consoleSender.sendMessage(miniMessages.deserialize(" - Download available at: <aqua>https://github.com/byPixelTV/SkRedis/releases</aqua>"))
                     UPDATE_VERSION = curVer
                 }
             }
@@ -47,7 +47,7 @@ class UpdateChecker(private val plugin: Main) : Listener {
         fun getLatestReleaseVersion(consumer: Consumer<String>) {
             val miniMessages = MiniMessage.miniMessage()
             try {
-                val uri = URI("https://api.github.com/repos/byPixelTV/skRedis/releases/latest")
+                val uri = URI("https://api.github.com/repos/byPixelTV/SkRedis/releases/latest")
                 val url = uri.toURL()
                 val reader = BufferedReader(InputStreamReader(url.openStream()))
                 val jsonObject = Gson().fromJson(reader, JsonObject::class.java)
@@ -55,7 +55,7 @@ class UpdateChecker(private val plugin: Main) : Listener {
                 tagName = tagName.removePrefix("v")
                 consumer.accept(tagName)
             } catch (e: IOException) {
-                server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>skRedis</aqua>]</grey> <red>Checking for updates failed!</red>"))
+                server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>Checking for updates failed!</red>"))
             }
         }
     }

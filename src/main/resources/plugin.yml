@@ -1,10 +1,10 @@
 main: "de.bypixeltv.skredis.Main"
 name: "SkRedis"
-version: "1.0.1"
+version: "1.0.2"
 api-version: "1.20"
 
 author: "byPixelTV"
-description: "A Skript-Addon to interact with Redis. This addon has support for Redis hashes, strings and lists!"
+description: "The modern way to use Redis with Skript."
 website: "https://bypixeltv.de"
 
 libraries:
