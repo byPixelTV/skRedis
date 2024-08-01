@@ -43,7 +43,7 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
         } else {
             JedisPool(
                 jConfig,
-                config.getString("redis.Host") ?: "127.0.0.1",
+                config.getString("redis.host") ?: "127.0.0.1",
                 config.getInt("redis.port"),
                 config.getInt("redis.timeout"),
                 password,
