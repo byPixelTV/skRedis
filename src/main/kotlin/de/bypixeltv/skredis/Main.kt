@@ -22,6 +22,10 @@ class Main : KSpigot() {
         this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <yellow>$message</yellow>"))
     }
 
+    fun sendInfoLogs(message: String) {
+        this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <green>$message</green>"))
+    }
+
     fun sendErrorLogs(message: String) {
         this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>$message</red>"))
     }

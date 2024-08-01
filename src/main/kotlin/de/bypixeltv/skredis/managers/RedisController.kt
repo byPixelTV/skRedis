@@ -64,7 +64,7 @@ class RedisController(private val plugin: Main) : BinaryJedisPubSub(), Runnable 
         try {
             jedisPool.resource.use { _ ->
                 isConnectionBroken.set(false)
-                plugin.sendLogs("Connection to Redis server has established! Success!")
+                plugin.sendInfoLogs("Connection to Redis server has established! Success!")
             }
         } catch (e: Exception) {
             isConnecting.set(false)

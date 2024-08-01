@@ -46,7 +46,7 @@ class EffSendMessage : Effect() {
         val message = message!!.getAll(event)
         val channel = channel!!.getSingle(event)
         if (message[0] == null) {
-            plugin.sendLogs("Message was empty. Please check your code.")
+            plugin.sendErrorLogs("Message was empty. Please check your code.")
             return
         }
         if (channel == null) {
