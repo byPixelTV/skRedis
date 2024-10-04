@@ -7,9 +7,8 @@ import de.bypixeltv.skredis.managers.RedisController
 import de.bypixeltv.skredis.managers.RedisMessageManager
 import de.bypixeltv.skredis.utils.IngameUpdateChecker
 import de.bypixeltv.skredis.utils.UpdateChecker
-import dev.jorel.commandapi.CommandAPI
-import dev.jorel.commandapi.CommandAPIBukkitConfig
 import net.axay.kspigot.main.KSpigot
+import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import net.kyori.adventure.text.minimessage.MiniMessage
 import java.io.IOException
 
@@ -18,20 +17,26 @@ class Main : KSpigot() {
     private val miniMessages = MiniMessage.miniMessage()
     private var redisController: RedisController? = null
 
+    private var adventure: BukkitAudiences? = null
+
     fun sendLogs(message: String) {
-        this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <yellow>$message</yellow>"))
+        this.adventure?.server(server.name)?.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <yellow>$message</yellow>"))
     }
 
     fun sendInfoLogs(message: String) {
-        this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <green>$message</green>"))
+        this.adventure?.server(server.name)?.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <green>$message</green>"))
     }
 
     fun sendErrorLogs(message: String) {
-        this.server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>$message</red>"))
+        this.adventure?.server(server.name)?.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>$message</red>"))
     }
 
     fun getRC(): RedisController? {
         return redisController
+    }
+
+    fun getAdventure(): BukkitAudiences? {
+        return adventure
     }
 
     private var instance: Main? = null
@@ -45,14 +50,14 @@ class Main : KSpigot() {
         instance = this
     }
 
-    override fun load() {
-        CommandAPI.onLoad(CommandAPIBukkitConfig(this).silentLogs(true).verboseOutput(true))
-        Commands()
-    }
-
     @Suppress("DEPRECATION")
     override fun startup() {
         saveDefaultConfig()
+
+        val commands = Commands()
+
+        this.getCommand("skredis")?.setExecutor(commands)
+        this.getCommand("skredis")?.tabCompleter = commands
 
         INSTANCE = this
         this.instance = this
@@ -60,20 +65,22 @@ class Main : KSpigot() {
         val localAddon = this.addon
 
         redisController = RedisController(this)
-        var redisController: RedisController? = null
+
+        adventure = BukkitAudiences.create(this)
 
         IngameUpdateChecker
 
         val version = description.version
         if (version.contains("-")) {
-            server.consoleSender.sendMessage(miniMessages.deserialize("<yellow>This is a BETA build, things may not work as expected, please report any bugs on GitHub</yellow>"))
-            server.consoleSender.sendMessage(miniMessages.deserialize("<yellow>https://github.com/byPixelTV/SkRedis/issues</yellow>"))
+            adventure?.server(server.name)?.sendMessage(miniMessages.deserialize("<yellow>This is a BETA build, things may not work as expected, please report any bugs on GitHub</yellow>"))
+            adventure?.server(server.name)?.sendMessage(miniMessages.deserialize("<yellow>This is a BETA build, things may not work as expected, please report any bugs on GitHub</yellow>"))
+            adventure?.server(server.name)?.sendMessage(miniMessages.deserialize("<yellow>https://github.com/byPixelTV/SkRedis/issues</yellow>"))
         }
 
         UpdateChecker.checkForUpdate(version)
         RedisMessageManager
 
-        server.consoleSender.sendMessage(miniMessages.deserialize("<gray>[<aqua>SkRedis</aqua>]</gray> <yellow>Successfully enabled SkRedis!</yellow>"))
+        adventure?.server(server.name)?.sendMessage(miniMessages.deserialize("<gray>[<aqua>SkRedis</aqua>]</gray> <yellow>Successfully enabled SkRedis!</yellow>"))
 
         try {
             localAddon?.loadClasses("de.bypixeltv.skredis.skript", "elements")
@@ -86,6 +93,9 @@ class Main : KSpigot() {
         if (redisController != null) {
             redisController!!.shutdown()
         }
-        CommandAPI.onDisable()
+        if (adventure != null) {
+            adventure!!.close()
+            this.adventure = null
+        }
     }
 }

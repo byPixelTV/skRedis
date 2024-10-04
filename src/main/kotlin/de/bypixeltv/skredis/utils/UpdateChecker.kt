@@ -26,19 +26,21 @@ class UpdateChecker(private val plugin: Main) : Listener {
     companion object {
         private var UPDATE_VERSION: Version? = null
 
+        val adventureServer = Main.INSTANCE.getAdventure()?.server(Main.INSTANCE.server.name)
+
         fun checkForUpdate(pluginVersion: String) {
             val miniMessages = MiniMessage.miniMessage()
-            server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> Checking for updates..."))
+            adventureServer?.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> Checking for updates..."))
             getLatestReleaseVersion { version ->
                 val plugVer = Version(pluginVersion)
                 val curVer = Version(version)
                 if (curVer <= plugVer) {
-                    server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <green>The plugin is up to date!</green>"))
+                    adventureServer?.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <green>The plugin is up to date!</green>"))
                 } else {
-                    server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>The plugin is not up to date!</red>"))
-                    server.consoleSender.sendMessage(miniMessages.deserialize(" - Current version: <red>v${pluginVersion}</red>"))
-                    server.consoleSender.sendMessage(miniMessages.deserialize(" - Available update: <green>v${version}</green>"))
-                    server.consoleSender.sendMessage(miniMessages.deserialize(" - Download available at: <aqua>https://github.com/byPixelTV/SkRedis/releases</aqua>"))
+                    adventureServer?.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>The plugin is not up to date!</red>"))
+                    adventureServer?.sendMessage(miniMessages.deserialize(" - Current version: <red>v${pluginVersion}</red>"))
+                    adventureServer?.sendMessage(miniMessages.deserialize(" - Available update: <green>v${version}</green>"))
+                    adventureServer?.sendMessage(miniMessages.deserialize(" - Download available at: <aqua>https://github.com/byPixelTV/SkRedis/releases</aqua>"))
                     UPDATE_VERSION = curVer
                 }
             }
@@ -55,7 +57,7 @@ class UpdateChecker(private val plugin: Main) : Listener {
                 tagName = tagName.removePrefix("v")
                 consumer.accept(tagName)
             } catch (e: IOException) {
-                server.consoleSender.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>Checking for updates failed!</red>"))
+                adventureServer?.sendMessage(miniMessages.deserialize("<grey>[<aqua>SkRedis</aqua>]</grey> <red>Checking for updates failed!</red>"))
             }
         }
     }

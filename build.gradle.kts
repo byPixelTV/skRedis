@@ -1,10 +1,9 @@
 plugins {
-    kotlin("jvm") version "2.0.0"
-    id("io.papermc.paperweight.userdev") version "1.7.1"
+    kotlin("jvm") version "2.0.20"
 }
 
 group = "de.bypixeltv"
-version = "1.0.2"
+version = "1.0.4"
 
 repositories {
     mavenCentral()
@@ -20,15 +19,15 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
 
-    implementation("dev.jorel", "commandapi-bukkit-shade-mojang-mapped", "9.5.1")
-    implementation("dev.jorel", "commandapi-bukkit-kotlin", "9.5.1")
-    implementation("net.axay:kspigot:1.20.4")
+    implementation("net.kyori:adventure-platform-bukkit:4.3.4")
+    implementation("net.kyori:adventure-text-minimessage:4.17.0")
+    implementation("net.axay:kspigot:1.21.0")
 
-    implementation("com.github.SkriptLang:Skript:2.9.0")
+    implementation("com.github.SkriptLang:Skript:2.9.3")
 
-    implementation("redis.clients:jedis:5.2.0-beta4")
+    implementation("redis.clients:jedis:5.2.0")
 }
 
 sourceSets {
@@ -49,8 +48,6 @@ tasks {
     }
     named("compileKotlin", org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask::class.java)
 }
-
-paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 kotlin {
     jvmToolchain(21)

@@ -1,17 +1,23 @@
 main: "de.bypixeltv.skredis.Main"
 name: "SkRedis"
-version: "1.0.2"
-api-version: "1.20"
+version: "1.0.4"
+api-version: "1.13"
 
 author: "byPixelTV"
 description: "The modern way to use Redis with Skript."
 website: "https://bypixeltv.de"
 
 libraries:
-  - "dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.5.1"
-  - "dev.jorel:commandapi-bukkit-kotlin:9.5.1"
-  - "net.axay:kspigot:1.20.4"
-  - "redis.clients:jedis:5.2.0-beta4"
+  - "net.axay:kspigot:1.21.0"
+  - "redis.clients:jedis:5.2.0"
   - "org.json:json:20240303"
+  - "net.kyori:adventure-text-minimessage:4.17.0"
+  - "net.kyori:adventure-platform-bukkit:4.3.4"
+
+commands:
+  skredis:
+    description: "Main command for SkRedis"
+    usage: "/skredis <info|version|reload|reloadredis>"
+    permission: "skredis.admin"
 
 depend: [Skript]
