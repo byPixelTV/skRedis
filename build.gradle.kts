@@ -25,7 +25,7 @@ dependencies {
     implementation("net.kyori:adventure-text-minimessage:4.17.0")
     implementation("net.axay:kspigot:1.21.0")
 
-    implementation("com.github.SkriptLang:Skript:2.9.3")
+    implementation("com.github.SkriptLang:Skript:2.9.4")
 
     implementation("redis.clients:jedis:5.2.0")
 }
