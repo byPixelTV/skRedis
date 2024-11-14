@@ -18,7 +18,7 @@
 ### 📑 Requirements
 
 * **Java 21+**
-* **Skript 2.9.0**
+* **Skript 2.9.4**
 * **Minecraft 1.21**
 
 ### 🆘 Where can I get help?
