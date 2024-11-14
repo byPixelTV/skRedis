@@ -9,7 +9,7 @@
 <br />
 
 [//]: # (<- Header ->)
-<h1 align="center">skRedis</h1>
+<h1 align="center">SkRedis</h1>
 
 <h3 align="center">The modern way to use Redis with Skript!</h3>
 <h6 align="center">This Skript-Addon allows you to interact with Redis!</h6>
