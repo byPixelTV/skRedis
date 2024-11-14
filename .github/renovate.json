@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":disableDependencyDashboard"
+  ],
+  "labels": [
+    "t: dependencies"
+  ],
+  "packageRules": [
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "github actions"
+    },
+    {
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "matchPackageNames": [
+        "*",
+        "!gradle"
+      ],
+      "groupName": "all dependencies with patch changes"
+    }
+  ],
+  "rebaseWhen": "conflicted",
+  "rebaseLabel": "s: rebase",
+  "stopUpdatingLabel": "s: stop updates",
+  "commitMessagePrefix": "chore: ",
+  "commitMessageAction": "update"
+}
