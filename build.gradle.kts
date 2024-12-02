@@ -29,7 +29,7 @@ dependencies {
     bukkitLibrary("net.kyori:adventure-text-minimessage:4.17.0")
     bukkitLibrary("net.axay:kspigot:1.21.0")
 
-    compileOnly("com.github.SkriptLang:Skript:2.9.4")
+    compileOnly("com.github.SkriptLang:Skript:2.9.5")
 
     bukkitLibrary("redis.clients:jedis:5.2.0")
 
